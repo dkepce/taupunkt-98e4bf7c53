@@ -35,7 +35,9 @@
   };
   TP.svg = function (tag, attrs, ...ch) {
     if (attrs && (attrs.nodeType || typeof attrs !== "object" || Array.isArray(attrs))) { ch.unshift(attrs); attrs = null; }
-    const el = document.createElementNS(NS, tag);
+    const m = /^([a-z0-9]+)((?:[.#][\w-]+)*)$/i.exec(tag) || [0, tag, ""];     // "g.grid" → <g class="grid">
+    const el = document.createElementNS(NS, m[1]);
+    (m[2].match(/[.#][\w-]+/g) || []).forEach(t => { if (t[0] === ".") el.classList.add(t.slice(1)); else el.id = t.slice(1); });
     if (attrs) apply(el, attrs, true);
     kids(el, ch);
     return el;

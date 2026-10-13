@@ -2,7 +2,7 @@
 (function (TP) {
   const { h, svg } = TP;
   const POS = { 1: [0, 0], 2: [1, 0], 3: [2, 0], 4: [3, 0], 5: [1, 1], 6: [2, 1], 8: [0, 2], 7: [3, 2], 9: [1, 3], 10: [2, 3], 11: [4, 1], 12: [4, 3], 13: [5, 2] };
-  const NW = 132, NH = 62, DX = 162, DY = 96, PADX = 14, PADY = 14;
+  const NW = 160, NH = 78, DX = 202, DY = 116, PADX = 16, PADY = 16;
   const nodeXY = n => ({ x: PADX + POS[n][0] * DX, y: PADY + POS[n][1] * DY });
   let sel = 0;
 
@@ -37,15 +37,15 @@
     TP.MODS.forEach(m => {
       const { x, y } = nodeXY(m.n), st = TP.stats(m.n), c = `var(${TP.LANES[m.lane].css})`;
       const g = svg("g", { class: "node" + (m.n === sel ? " sel" : ""), transform: `translate(${x},${y})`, tabindex: 0, role: "button", "aria-label": "M" + m.n + " " + m.short });
-      g.appendChild(svg("rect", { class: "box", width: NW, height: NH, rx: 8 }));
-      g.appendChild(svg("rect", { x: 0, y: 0, width: 5, height: NH, rx: 2.5, fill: c }));
-      g.appendChild(svg("text", { class: "nn", x: 15, y: 18 }, "M" + String(m.n).padStart(2, "0")));
-      g.appendChild(svg("text", { class: "tt", x: 15, y: 37 }, m.short));
-      g.appendChild(svg("text", { class: "ss", x: 15, y: 52 }, m.sub));
-      g.appendChild(svg("rect", { x: 15, y: NH - 6, width: NW - 26, height: 3, rx: 1.5, fill: "var(--surface3)" }));
-      g.appendChild(svg("rect", { x: 15, y: NH - 6, width: Math.max(0, (NW - 26) * st.mastery), height: 3, rx: 1.5, fill: c }));
-      for (let i = 0; i < m.w; i++) g.appendChild(svg("circle", { cx: NW - 12 - i * 8, cy: 14, r: 2.6, fill: "var(--warn)" }));
-      if (st.due) { g.appendChild(svg("circle", { cx: NW - 4, cy: 2, r: 9, fill: "var(--accent)" })); g.appendChild(svg("text", { x: NW - 4, y: 5.5, "text-anchor": "middle", style: "fill:var(--accent-ink);font-size:10px;font-weight:700" }, st.due > 99 ? "99" : st.due)); }
+      g.appendChild(svg("rect", { class: "box", width: NW, height: NH, rx: 11 }));
+      g.appendChild(svg("rect", { x: 0, y: 0, width: 6, height: NH, rx: 3, fill: c }));
+      g.appendChild(svg("text", { class: "nn", x: 18, y: 21 }, "M" + String(m.n).padStart(2, "0")));
+      g.appendChild(svg("text", { class: "tt", x: 18, y: 43 }, m.short));
+      g.appendChild(svg("text", { class: "ss", x: 18, y: 60 }, m.sub));
+      g.appendChild(svg("rect", { x: 18, y: NH - 9, width: NW - 32, height: 4, rx: 2, fill: "var(--surface3)" }));
+      g.appendChild(svg("rect", { x: 18, y: NH - 9, width: Math.max(0, (NW - 32) * st.mastery), height: 4, rx: 2, fill: c }));
+      for (let i = 0; i < m.w; i++) g.appendChild(svg("circle", { cx: NW - 14 - i * 10, cy: 16, r: 3.4, fill: "var(--warn)" }));
+      if (st.due) { g.appendChild(svg("circle", { cx: NW - 4, cy: 2, r: 11, fill: "var(--accent)" })); g.appendChild(svg("text", { x: NW - 4, y: 6, "text-anchor": "middle", style: "fill:var(--accent-ink);font-size:12px;font-weight:700" }, st.due > 99 ? "99" : st.due)); }
       const pick = () => onPick(m.n);
       g.addEventListener("click", pick);
       g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
