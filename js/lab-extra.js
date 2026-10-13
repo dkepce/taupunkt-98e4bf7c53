@@ -65,7 +65,7 @@
         s.appendChild(svg("text", { x: sx + 8, y: B - 10, style: `font-size:12px;font-weight:700;fill:${colr}` }, "θ_si " + fmt(r.thSi, 1) + " °C"));
         const card = h("div.card.pad", h("h3", "Sättigungsdruck & Taupunkt"), s,
           h("div.legend-row", h("span", h("i", { style: { background: "var(--ps)" } }), "p_S(θ) — Magnus, keine Gerade"), h("span", h("i", { style: { background: "var(--p)" } }), "Dampfdruck der Raumluft"), h("span", "Wo die Linie p die Kurve p_S trifft, liegt der Taupunkt")));
-        main.appendChild(card);
+        const rightCol = h("div.stack", { style: { gap: "16px" } });
         /* gauges */
         const gauge = (label, v, lo, hi, marks, fmtv) => {
           const g = svg("svg", { viewBox: "0 0 360 54", class: "chart" });
@@ -76,17 +76,18 @@
           g.appendChild(svg("text", { x, y: 12, "text-anchor": "middle", style: "font-size:12px;font-weight:700;fill:var(--ink)" }, fmtv(v)));
           return h("div", h("div.label", label), g);
         };
-        main.appendChild(h("div.card.pad", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "18px" } },
+        rightCol.appendChild(h("div.card.pad", { style: { display: "flex", flexDirection: "column", gap: "18px" } },
           gauge("φ an der Oberfläche", r.phiSi, 0, 1.2, [{ at: 0.8, c: "var(--warn)", t: "80 % Schimmel" }, { at: 1, c: "var(--bad)", t: "100 % Kondensat" }], v => fmt(v * 100, 0) + " %"),
           gauge("Temperaturfaktor f_Rsi", r.fRsi, 0.4, 1, [{ at: 0.69, c: "var(--warn)", t: "0,69 Kond." }, { at: 0.71, c: "var(--ok)", t: "0,71 Schimmel" }], v => fmt(v, 3))));
-        main.appendChild(h("div.card.pad.flat",
+        rightCol.appendChild(h("div.card.pad.flat",
           h("div.label", "Was wäre wenn?"),
           h("div.grid", { style: { gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", marginTop: "8px" } },
             h("div", h("div", "Größte zulässige Raumluftfeuchte (U = ", fmt(FS.U, 2), "):"), h("div.mono", { style: { fontSize: "17px", marginTop: "4px" } }, "φ_krit,Kondensat = " + fmt(Math.min(1, P.phiCritLecture(FS.ti, r.thSi)) * 100, 2) + " %"), h("div.mono.muted", "φ_krit,Schimmel (φ_si = 80 %) = " + fmt(Math.min(1, crit.mould) * 100, 1) + " %"), h("div.faint", { style: { fontSize: "12px", marginTop: "2px" } }, "Kondensat: Formelsammlung-Formel Θ_S = φ^(1/8)(110+θ_i)−110 (VO8-Beispiel U = 0,8 → 82,34 %). Mit Magnus exakt: " + fmt(Math.min(1, crit.cond) * 100, 1) + " %.")),
             h("div", h("div", "Größtes U, bei dem φ_si unter 80 % bleibt (bei ", fmt(FS.phii * 100, 0), " % r.F.):"), h("div.mono", { style: { fontSize: "17px", marginTop: "4px" } }, "U ≤ " + fmt(uM, 2) + " W/m²K"), h("div.mono.muted", "(Kondensat erst ab U > " + fmt(uC, 2) + ")"))),
           TP.texEl("\\theta_{si}=\\theta_i-U\\,R_{si}\\,(\\theta_i-\\theta_e),\\qquad \\Theta_S=\\varphi^{1/8}\\,(110+\\theta_i)-110", true)));
+        main.appendChild(h("div.split", card, rightCol));
       };
-      const wallBtn = h("button.btn.sm", { onclick: () => { FS.U = P.round(TP.wallStack().U, 3); FS.ti = TP.wall.cond.ti; FS.phii = TP.wall.cond.phii; FS.te = TP.wall.cond.te; FS.rsi = TP.wall.cond.rsi; el.replaceChildren(); TP.labs.feuchte.render(el); } }, "U von meinem Wandaufbau übernehmen");
+      const wallBtn = h("button.btn.sm", { onclick: () => { FS.U = P.round(TP.wallStack().U, 3); FS.ti = TP.wall.cond.ti; FS.phii = TP.wall.cond.phii; FS.te = TP.wall.cond.te; FS.rsi = TP.wall.cond.rsi; TP.render(); } }, "U von meinem Wandaufbau übernehmen");
       const side = h("div.side", h("div.card.pad", { style: { padding: "14px 16px" } }, h("div.label", { style: { marginBottom: "10px" } }, "Raum & Bauteil"),
         h("div.stack", { style: { gap: "12px" } },
           slider("Raumtemperatur θ_i", "°C", () => FS.ti, v => { FS.ti = v; draw(); }, 15, 26, 0.5),
@@ -127,7 +128,6 @@
         A.appendChild(h("div.kpis", { style: { marginTop: "6px" } }, kpi("b₁ " + a.name, fmt(b1, 0), "Ws½/m²K"), kpi("b₂ " + b.name, fmt(b2, 0), "Ws½/m²K"), kpi("θ_c", fmt(tc, 1), "°C"),
           kpi("Es fühlt sich an wie", tc > 30 ? "warm" : tc > 25 ? "lauwarm" : "kalt", "", tc > 30 ? "ok" : tc > 25 ? "warn" : "bad")));
         A.appendChild(h("div.callout", { style: { marginTop: "10px" } }, h("b", "Warum? "), "The material with the larger b dominates the contact temperature: θ_c lies ", fmt(share * 100, 0), " % of the way from θ₂ toward θ₁ ", "(b₁ is ", fmt(b1 / b2, b1 / b2 > 10 ? 0 : 1), "× b₂). Both objects are physically at their own temperature — only the ", h("i", "contact"), " temperature differs. That is why metal feels colder than wood at the same temperature."));
-        main.appendChild(A);
         /* B: diffusivity vs conductivity */
         const list = ["holz", "beton", "eps", "mw", "ziegel", "stahl", "kupfer"].map(id => { const m = P.MAT[id]; return { m, lam: m.lam, a: P.a(m.lam, m.rho, m.c), rc: m.rho * m.c, b: P.b(m.lam, m.rho, m.c) }; });
         const B = h("div.card.pad", h("div.row.between", h("h3", "λ ist nicht alles: Temperaturleitfähigkeit"), h("span.faint", { style: { fontSize: "12.5px" } }, "a = λ / (ρ·c)")));
@@ -142,7 +142,7 @@
         col(430, "a", "Temperaturleitfähigkeit a  (log)", "var(--accent)", 1e-8, 2e-4, "m²/s");
         B.appendChild(bs);
         B.appendChild(h("div.callout.warn", h("b", "The counter-intuitive result: "), "EPS has the lowest λ but a larger a than concrete or timber — because ρ·c is tiny. Little heat flows (low λ), but there is hardly any material to heat up, so its temperature reacts quickly. (VO10 Mentimeter: “most answered incorrectly the first time”.)"));
-        main.appendChild(B);
+        main.appendChild(h("div.split.even", A, B));
         /* C: Zeitkonstante */
         const C = h("div.card.pad", h("div.row.between", h("h3", "Zeitkonstante τ = C / H: Speichermasse dämpft"), h("span.faint", { style: { fontSize: "12.5px" } }, "θ_i + τ·dθ_i/dt = θ_e + γ·E_ST")));
         const VW2 = 760, VH2 = 270, L2 = 50, R2 = VW2 - 16, T2 = 16, B2 = VH2 - 34;
@@ -180,7 +180,7 @@
           numField("Temperatur θ₁", "°C", () => KT.t1, v => { KT.t1 = v; draw(); }, 0.5),
           h("label.field", h("span", "Körper 2"), sel(() => KT.m2, v => { KT.m2 = v; draw(); })),
           numField("Temperatur θ₂", "°C", () => KT.t2, v => { KT.t2 = v; draw(); }, 0.5),
-          h("div.row", h("button.btn.sm", { onclick: () => { Object.assign(KT, { m1: "haut", t1: 34, m2: "eps", t2: 20 }); el.replaceChildren(); TP.labs.kontakt.render(el); } }, "Haut ↔ Polystyrol"), h("button.btn.sm", { onclick: () => { Object.assign(KT, { m1: "haut", t1: 34, m2: "kupfer", t2: 20 }); el.replaceChildren(); TP.labs.kontakt.render(el); } }, "Haut ↔ Kupfer")))),
+          h("div.row", h("button.btn.sm", { onclick: () => { Object.assign(KT, { m1: "haut", t1: 34, m2: "eps", t2: 20 }); TP.render(); } }, "Haut ↔ Polystyrol"), h("button.btn.sm", { onclick: () => { Object.assign(KT, { m1: "haut", t1: 34, m2: "kupfer", t2: 20 }); TP.render(); } }, "Haut ↔ Kupfer")))),
         h("div.callout", h("b", "Formelsammlung: "), TP.texEl("b=\\sqrt{\\lambda\\,\\rho\\,c},\\quad a=\\frac{\\lambda}{\\rho\\,c},\\quad \\theta_c=\\frac{b_1\\theta_1+b_2\\theta_2}{b_1+b_2}")));
       out.appendChild(side); out.appendChild(main); el.appendChild(out); draw();
     },
@@ -209,7 +209,7 @@
         let x = 14; const tot = VW - 28 - (OP.surfs.length - 1) * 6;
         OP.surfs.forEach(r => { const w = Math.max(34, r[1] / At * tot); s.appendChild(svg("rect", { x, y: 24, width: w, height: 70, rx: 6, fill: colorOf(r[2]), opacity: 0.88 })); s.appendChild(svg("text", { x: x + w / 2, y: 56, "text-anchor": "middle", style: "font-size:14px;font-weight:700;fill:#fff" }, fmt(r[2], 0) + " °C")); s.appendChild(svg("text", { x: x + w / 2, y: 76, "text-anchor": "middle", style: "font-size:11px;fill:#fff" }, r[1] + " m²")); s.appendChild(svg("text", { x: x + w / 2, y: 114, "text-anchor": "middle", style: "font-size:11.5px;fill:var(--ink2)" }, r[0].replace(/ \(.*\)/, ""))); x += w + 6; });
         s.appendChild(svg("text", { x: 14, y: 14, style: "font-size:11.5px;fill:var(--ink3)" }, "Flächen proportional zur Größe — Farbe = Oberflächentemperatur"));
-        main.appendChild(h("div.card.pad", h("h3", "Raumumschließungsflächen"), s,
+        const roomCard = (h("div.card.pad", h("h3", "Raumumschließungsflächen"), s,
           TP.texEl("\\bar\\theta_r=\\frac{\\sum A_i\\,\\theta_{s,i}}{A_{ges}}=" + TP.txNum(tr, 2) + "\\,^\\circ\\mathrm{C},\\qquad \\theta_{op}\\approx\\frac{\\theta_L+\\bar\\theta_r}{2}=\\frac{" + TP.txNum(OP.tl, 1) + "+" + TP.txNum(tr, 2) + "}{2}=" + TP.txNum(top, 2) + "\\,^\\circ\\mathrm{C}", true)));
         /* adaptive chart */
         const W2 = 760, H2 = 300, L2 = 52, R2 = W2 - 16, T2 = 16, B2 = H2 - 36, cs = svg("svg", { class: "chart", viewBox: `0 0 ${W2} ${H2}` });
@@ -225,8 +225,9 @@
         cs.appendChild(svg("text", { x: X2(OP.trm) + 11, y: Y2(Math.max(yr[0], Math.min(yr[1], top))) + 4, style: "font-size:12px;font-weight:700;fill:var(--ink)" }, "θ_op " + fmt(top, 1)));
         cs.appendChild(svg("text", { x: 4, y: 12, style: "font-size:12px;fill:var(--ink3)" }, "θ_op in °C"));
         cs.appendChild(svg("text", { x: (L2 + R2) / 2, y: H2 - 4, "text-anchor": "middle", style: "font-size:12px;fill:var(--ink3)" }, "Mittlere Außentemperatur T_rm in °C"));
-        main.appendChild(h("div.card.pad", h("div.row.between", h("h3", "Adaptives Komfortmodell"), h("span.faint", { style: { fontSize: "12.5px" } }, "T_komfort = " + fmt(K[0], 2) + " · T_rm + " + fmt(K[1], 1))), cs,
-          h("div.callout", h("b", "Only for naturally ventilated buildings"), " — in air-conditioned buildings the classical PMV/PPD bands apply. Note: VO6 uses 0,31 / 17,8, VO12 uses 0,33 / 18,8 (a deliberate discrepancy in the course material; toggle on the left). T_lim is not in the lecture notes — ASHRAE 55: ±2,5 K (90 %), ±3,5 K (80 %).")));
+        const adaptCard = h("div.card.pad", h("div.row.between", h("h3", "Adaptives Komfortmodell"), h("span.faint", { style: { fontSize: "12.5px" } }, "T_komfort = " + fmt(K[0], 2) + " · T_rm + " + fmt(K[1], 1))), cs,
+          h("div.callout", h("b", "Only for naturally ventilated buildings"), " — in air-conditioned buildings the classical PMV/PPD bands apply. Note: VO6 uses 0,31 / 17,8, VO12 uses 0,33 / 18,8 (a deliberate discrepancy in the course material; toggle on the left). T_lim is not in the lecture notes — ASHRAE 55: ±2,5 K (90 %), ±3,5 K (80 %)."));
+        main.appendChild(h("div.split.even", roomCard, adaptCard));
       };
       const surfCtl = () => h("div.stack", { style: { gap: "6px" } }, OP.surfs.map((r, i) => h("div", { style: { display: "grid", gridTemplateColumns: "1fr 64px 64px", gap: "6px", alignItems: "center" } },
         h("span", { style: { fontSize: "13px" } }, r[0]),

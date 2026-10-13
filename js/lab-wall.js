@@ -249,14 +249,13 @@
         const notes = [];
         notes.push(st.U <= uLim ? "U ≤ 0,35 W/m²K: erfüllt die OIB-RL-6-Mindestanforderung für Außenwände." : "U > 0,35 W/m²K: erfüllt die OIB-RL-6-Mindestanforderung für Außenwände nicht (Beispielwert aus dem Repetitorium).");
         notes.push(st.thSi <= dew ? "θ_si liegt unter dem Taupunkt der Innenluft (" + TP.fmt(dew, 1) + " °C): Oberflächenkondensat!" : "θ_si liegt über dem Taupunkt der Innenluft (" + TP.fmt(dew, 1) + " °C): kein Oberflächenkondensat.");
-        main.appendChild(h("div.callout" + (st.U <= uLim && st.thSi > dew ? ".ok" : " .warn").replace(" ", ""), notes.map(t => h("div", t))));
+        main.appendChild(h("div.callout" + (st.U <= uLim && st.thSi > dew ? ".ok" : ".warn"), notes.map(t => h("div", t))));
         const card = h("div.card.pad", h("div.row.between", h("h3", "Temperaturverlauf"), h("span.faint", { style: { fontSize: "12.5px" } }, "Maus über das Diagramm bewegen")));
         card.appendChild(TP.wallChart(st, c, { dew }));
-        card.appendChild(h("div.legend-row", { style: { marginTop: "6px" } }, h("span", h("i", { style: { background: "var(--accent)" } }), "θ(x)"), h("span", h("i", { style: { background: "var(--ps)" } }), "Taupunkt der Innenluft (Formelsammlung: Θ_S = φ^(1/8)·(110+θ_L) − 110)")));
-        main.appendChild(card);
-        main.appendChild(h("details.acc", { open: true }, h("summary", "Formblatt (wie in der Prüfung)"), h("div", TP.formblatt(st, c, null),
-          h("div.faint", { style: { fontSize: "12.5px", marginTop: "8px" } }, "Rechenweg: R = d/λ → R_T = R_si + ΣR + R_se → U = 1/R_T → q̇ = U·(θ_i − θ_e) → θ_n = θ_(n−1) − q̇·R_n"))));
-        main.appendChild(h("div.callout", h("b", "Exam trap: "), "U says nothing about ΔT or area — those only enter through q̇ = U·A·Δθ. And U can never exceed 1/(R_si+R_se) = 5,88 W/m²K."));
+        card.appendChild(h("div.legend-row", { style: { marginTop: "6px" } }, h("span", h("i", { style: { background: "var(--accent)" } }), "θ(x)"), h("span", h("i", { style: { background: "var(--ps)" } }), "Taupunkt der Innenluft (Θ_S = φ^(1/8)·(110+θ_L) − 110)")));
+        const fb = h("div.card.pad", h("h3", "Formblatt (wie in der Prüfung)"), h("div", { style: { marginTop: "8px" } }, TP.formblatt(st, c, null)),
+          h("div.faint", { style: { fontSize: "12.5px", marginTop: "8px" } }, "R = d/λ → R_T = R_si + ΣR + R_se → U = 1/R_T → q̇ = U·(θ_i − θ_e) → θ_n = θ_(n−1) − q̇·R_n"));
+        main.appendChild(h("div.split", card, h("div.stack", { style: { gap: "16px" } }, fb, h("div.callout", h("b", "Exam trap: "), "U says nothing about ΔT or area — those only enter through q̇ = U·A·Δθ. And U can never exceed 1/(R_si+R_se) = 5,88 W/m²K."))));
       };
       editor = TP.wallEditor(draw);
       out.appendChild(h("div.side", editor));

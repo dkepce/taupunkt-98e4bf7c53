@@ -172,21 +172,22 @@
           h("span", h("i", { style: { background: "var(--p)" } }), "Partialdruck p"), h("span", h("i", { style: { background: "var(--ps)" } }), "Sättigungsdruck p_S (Polygonzug)"),
           mode === "tau" ? h("span", h("i", { style: { background: "var(--ink)", height: "2px" } }), "Seileck") : null,
           mode === "tau" ? h("span", h("i", { style: { background: "var(--cond)", height: "10px", border: "1px solid var(--ps)" } }), "Kondensat-Dreieck / Vieleck") : null));
-        main.appendChild(card);
-        main.appendChild(result(g, c));
-        /* rules of thumb */
+        /* left: the diagram; right: what it says (Rechenweg, verdict, rules of thumb) */
+        const right = h("div.stack", { style: { gap: "16px" } }, result(g, c));
         if (g.rules) {
           const r = g.rules, rows = g.st.rows;
-          main.appendChild(h("div.card.pad.flat", h("div.label", "Faustregeln (spart das Zeichnen)"),
+          right.appendChild(h("div.card.pad.flat", h("div.label", "Faustregeln (spart das Zeichnen)"),
             h("div.stack", { style: { marginTop: "6px", gap: "6px" } },
               h("div", h("span.tag." + (r.insulationOutside ? "ok" : "bad"), r.insulationOutside ? "✓" : "✗"), " Schicht mit dem größten Temperaturabfall (",
                 h("b", (r.dropLayer + 1) + " " + rows[r.dropLayer].name), ") liegt ", r.insulationOutside ? "außen von" : "innen von", " der Schicht mit dem größten µ·d (", h("b", (r.sdLayer + 1) + " " + rows[r.sdLayer].name), ")."),
               h("div.muted", { style: { fontSize: "13px" } }, "Dämmung so weit wie möglich außen, Dampfbremse/-sperre so weit wie möglich innen — then vapour reaches the cold zone with the least remaining path."))));
         }
-        main.appendChild(h("details.acc", h("summary", "Formblatt mit Dampfdruck-Spalten"), h("div", TP.formblatt(g.st, c, g),
-          h("div.faint", { style: { fontSize: "12.5px", marginTop: "8px" } }, "p_S wird hier mit der Magnus-Formel gerechnet; die Tabelle der Prüfung weicht um höchstens ~0,3 % ab. Rote Zeilen: p > p_S → Kondensat."))));
-        main.appendChild(h("details.acc", h("summary", "Die 7 Schritte der Konstruktion (VO15)"), h("div",
-          h("ol.steps7", ["Achsenkreuz mit nur einem Maßstab pro Achse (Sprung im Maßstab = 0 Punkte).", "Schichten über ihre µ·d-Werte auf der x-Achse einzeichnen — inklusive R_si/R_se als schmale Bänder.", "Partialdruck: nur zwei Punkte (p_i, p_e), gerade Linie.", "Sättigungsdruck-Polygonzug: ein Punkt pro Schichtgrenze, aus den Schichttemperaturen.", "Taupunkt = Punkt mit dem größten Normalabstand zur Partialdrucklinie.", "Seileck: Seil an den Enden einhängen und straffziehen → Dreieck oder Vieleck (alle Unterschneidungen!).", "Trockenperiode nicht vergessen (eigene Randbedingungen, eigene Partialdrucklinie)."].map(t => h("li", t))))));
+        main.appendChild(h("div.split", card, right));
+        main.appendChild(h("div.split.even",
+          h("details.acc", { open: true }, h("summary", "Formblatt mit Dampfdruck-Spalten"), h("div", TP.formblatt(g.st, c, g),
+            h("div.faint", { style: { fontSize: "12.5px", marginTop: "8px" } }, "p_S wird hier mit der Magnus-Formel gerechnet; die Tabelle der Prüfung weicht um höchstens ~0,3 % ab. Rote Zeilen: p > p_S → Kondensat."))),
+          h("details.acc", h("summary", "Die 7 Schritte der Konstruktion (VO15)"), h("div",
+            h("ol.steps7", ["Achsenkreuz mit nur einem Maßstab pro Achse (Sprung im Maßstab = 0 Punkte).", "Schichten über ihre µ·d-Werte auf der x-Achse einzeichnen — inklusive R_si/R_se als schmale Bänder.", "Partialdruck: nur zwei Punkte (p_i, p_e), gerade Linie.", "Sättigungsdruck-Polygonzug: ein Punkt pro Schichtgrenze, aus den Schichttemperaturen.", "Taupunkt = Punkt mit dem größten Normalabstand zur Partialdrucklinie.", "Seileck: Seil an den Enden einhängen und straffziehen → Dreieck oder Vieleck (alle Unterschneidungen!).", "Trockenperiode nicht vergessen (eigene Randbedingungen, eigene Partialdrucklinie)."].map(t => h("li", t)))))));
       };
       editor = TP.wallEditor(draw);
       const dry = TP.wall.cond.dry;

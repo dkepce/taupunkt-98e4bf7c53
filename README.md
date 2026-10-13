@@ -11,16 +11,18 @@ Double-click **`Start Taupunkt.bat`** in the folder above (or run `python tools/
 It must run through this little server (not by double-clicking `index.html`), because the browser blocks loading the data files from `file://`.
 Use Brave / Chrome / Edge: they can save into a folder you choose (File System Access API).
 
-## The six tabs
+## How it is organised
+
+Top bar = six tabs (Alt+1…6). Almost every tab has a **left sidebar** for context (modules, labs, topics, sections) and a wide work area. **Ctrl+K** searches all cards, formulas, symbols and modules.
 
 | Tab | What it does |
 |---|---|
-| **Karte** | The 13 Study Modules as a dependency map (dots = exam weight, bar = your mastery, badge = cards due). Click a module: exam risk, tick-off learning goals, quick formulas, shortcuts to cards / quiz / calculations / lab. "Empfohlen als Nächstes" picks the best next module (exam weight × what is still open × prerequisites). |
-| **Labor** | Interactive physics. *Wandaufbau*: build a wall layer by layer (drag to reorder), live U-value, temperature profile with hover, exam-style Formblatt. *Glaser-Diagramm*: the same wall as a Glaser diagram — saturation polygon, partial-pressure line, Seileck, Taupunkt, G_K / G_A, Tauperiode and Trockenperiode, rule-of-thumb check, and "Aufgaben" (e.g. make the Innendämmung condensate-free without changing the layer order). *Taupunkt & Schimmel*: dew point, φ at the surface, f_Rsi, critical humidity, largest allowable U. *Wärmeeindringung*: contact temperature, diffusivity vs. conductivity, time constant τ (thermal mass damps the daily swing). *Operative Temperatur*: mean radiant temperature, θ_op, adaptive comfort band. |
-| **Formeln** | The whole Formelsammlung (94 formulas, each tagged with the lecture that drilled it). *Prüfungsblatt-Modus* hides names/VO/units like the real exam sheet. Symbols & pronunciation, plus tables (Magnus p_S lookup with interpolation, R_si/R_se, CO₂). |
-| **Üben** | **Karten**: 506 cards from the official question catalogues (VO4, 8, 11–14) and the concept-question files, spaced repetition (Nochmal / Schwer / Gut / Leicht). **Quiz**: 39 multi-select questions in the exam's format (7 are the course's own example questions), three scoring regimes. **Rechnen**: 23 generated calculation types with random numbers and worked solutions. **Glaser-Training**: a generated wall, you fill the Formblatt, timed against the 15–20 min target, 7 points. |
-| **Prüfung** | A mock exam: 10 MC (10 P) + 4 Rechenbeispiele (13 P) + Glaser (7 P) = 30 P, 120 min, 50 % to pass. Answers are marked and worked solutions shown after hand-in; weak modules are listed. |
-| **Fortschritt** | Mastery per module, exam countdown and a daily dose (new cards per day), weak calculation types / quiz questions / "leech" cards, mock-exam and Glaser history, 17-week activity heat map. |
+| **Übersicht** | *Heute*: a daily plan (due cards, new cards, 5 calculations, 10 quiz questions, Glaser every 2 days, a weekly mock exam) with one primary button, exam countdown, "continue where you stopped", all 13 modules as small progress tiles, first-run set-up. *Fortschritt*: mastery per module, daily dose, weak spots, history, heat map. *Speicher & Einstellungen*: save folder, backup, exam date, theme, shortcuts, reset. |
+| **Lernen** | The learning path (13 modules, grouped, with progress rings). One module page: title, exam weight, "builds on / leads to", five practice shortcuts in a sensible order (goals → cards → calculations → quiz → lab), tick-off learning goals, the lecturer's favourite questions with answers, the exam-risk note and the formulas. |
+| **Labor** | Sidebar: the five labs and the controls of the current one. Wide area: charts and the explanation. *Wandaufbau* (U-value, temperature profile, Formblatt), *Glaser-Diagramm* (Seileck, Taupunkt, G_K/G_A, goals), *Taupunkt & Schimmel*, *Wärmeeindringung*, *Operative Temperatur*. Each lab ends with a link to the matching practice. |
+| **Üben** | Sidebar: Karten / Quiz / Rechnen / Glaser-Training and a topic filter (one module or all). Centre: one focused activity — 506 spaced-repetition cards (keyboard: Space, 1–4), 39 exam-format multiple-choice questions with three scoring regimes, 23 calculation types with random numbers, the timed Glaser drill. |
+| **Prüfung** | Mock exam (10 MC + 4 calculations + Glaser, 30 P, 120 min, 50 % to pass). While running, the sidebar is the exam navigator: timer, numbered questions (answered / flagged "⚑ später" for the two-pass tactic), hand-in; after hand-in the numbers turn green/red. |
+| **Formeln** | Sidebar: Formelsammlung (by section) / Symbole & Aussprache / Tabellen. *Prüfungsblatt-Modus* hides names, VO and units like the real sheet. |
 
 ## Where your progress is saved
 
@@ -39,7 +41,8 @@ app/
     physics.js     the building-physics core (U-value, Magnus p_S, Glaser incl. Seileck and G_K/G_A, ...). Pure functions, no screen code.
     data.js        module map, spaced repetition, mastery
     mcq.js         the multiple-choice bank        gens.js   the calculation generators
-    charts.js  lab-wall.js  lab-glaser.js  lab-extra.js  tab-*.js  glaser-drill.js  app.js
+    ui.js          layout pieces: sidebar + stage, navigation rows, progress rings
+    charts.js  lab-wall.js  lab-glaser.js  lab-extra.js  glaser-drill.js  tab-uebersicht.js  tab-lernen.js  tab-labor.js  tab-ueben.js  tab-pruefung.js  tab-formeln.js  app.js
   data/            cards.json formulas.json symbols.json modules.json   (generated from the vault)
   vendor/katex/    KaTeX 0.16.22 (MIT) — formula rendering, bundled so it works offline
   tools/

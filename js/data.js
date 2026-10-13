@@ -66,8 +66,9 @@
     },
     preview: (id, g) => { const s = TP.srs.step(TP.S.cards[id], g); return g === 0 ? "gleich nochmal" : s.ivl === 1 ? "1 Tag" : s.ivl + " Tage"; },
     grade(id, g) {
+      const fresh = !TP.S.cards[id];
       const s = TP.srs.step(TP.S.cards[id], g);
-      TP.S.cards[id] = s; TP.logAct("cards"); TP.saveSoon();
+      TP.S.cards[id] = s; TP.logAct("cards"); if (fresh) TP.logAct("newcards"); TP.saveSoon();
       return s;
     },
     known: id => { const s = TP.S.cards[id]; return !!s && s.ivl >= 5; },
