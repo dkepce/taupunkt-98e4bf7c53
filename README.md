@@ -3,7 +3,7 @@
 A web app (plain HTML/CSS/JS, no build step, installable as a PWA) to prepare for the **Bauphysik** exam (TU Wien, Ulrich Pont, LVA 259.606). It turns the Obsidian vault in
 `G:\My Drive\02 Education\01 Lectures\06 Bauphysik\BAUPHYSIK\Bauphysik` into something you can *do*: explore, simulate, drill and take mock exams.
 
-> **Private.** `data/` contains the lecturer's material (question catalogues, formula sheet). Keep this folder private; do not publish it (no GitHub Pages, no public repo).
+> **Live:** https://dkepce.github.io/taupunkt-98e4bf7c53/ — a public but unguessable link (repo `dkepce/taupunkt-98e4bf7c53`, `noindex`). Open it in Brave/Chrome and use the browser's *Install* button to get it as a PC app. `data/` holds the course's question catalogues and formula sheet; Doruk decided he does not mind that being public.
 
 ## Start it
 
