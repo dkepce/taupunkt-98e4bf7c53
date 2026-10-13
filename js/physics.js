@@ -1,4 +1,4 @@
-/* Taupunkt — building-physics core. Pure functions, no DOM. Numbers follow the course (Formelsammlung SS2025). */
+/* Bauphysik — building-physics core. Pure functions, no DOM. Numbers follow the course (Formelsammlung SS2025). */
 (function (root) {
   const TP = (root.TP = root.TP || {});
   const P = (TP.phys = {});

@@ -1,4 +1,4 @@
-/* Taupunkt — Lernen: the 13 modules as a learning path (left) and one module page (right).
+/* Bauphysik — Lernen: the 13 modules as a learning path (left) and one module page (right).
    Reading order of the page: what is this and what does it build on → what to do next (practice shortcuts) → the content itself. */
 (function (TP) {
   const { h } = TP;

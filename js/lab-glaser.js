@@ -1,4 +1,4 @@
-/* Taupunkt — Glaser lab: the diagram, the Seileck, G_K / G_A, rules of thumb, goal check */
+/* Bauphysik — Glaser lab: the diagram, the Seileck, G_K / G_A, rules of thumb, goal check */
 (function (TP) {
   const { h, svg } = TP;
   const P = TP.phys;

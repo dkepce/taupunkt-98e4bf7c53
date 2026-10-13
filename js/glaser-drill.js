@@ -1,4 +1,4 @@
-/* Taupunkt — Glaser drill: a generated wall, you fill the Formblatt like in the exam, timed against the 15–20 minute target. 7 points. */
+/* Bauphysik — Glaser drill: a generated wall, you fill the Formblatt like in the exam, timed against the 15–20 minute target. 7 points. */
 (function (TP) {
   const { h } = TP;
   const P = TP.phys;

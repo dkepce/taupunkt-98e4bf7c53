@@ -1,4 +1,4 @@
-/* Taupunkt — module map, content loading, spaced repetition, mastery */
+/* Bauphysik — module map, content loading, spaced repetition, mastery */
 (function (TP) {
   /* The 13 Study Modules, in the order of the vault's "Study Modules" notes.
      lane = colour family, w = how much the exam cares (1–5, from the lecturer's own statements in the vault), deps = what it builds on. */

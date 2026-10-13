@@ -1,4 +1,4 @@
-/* Taupunkt — Üben: sidebar = what (Karten / Quiz / Rechnen / Glaser) + topic filter; centre = one focused activity.
+/* Bauphysik — Üben: sidebar = what (Karten / Quiz / Rechnen / Glaser) + topic filter; centre = one focused activity.
    Reusable pieces (multiple-choice and calculation widgets) live in TP.ui and are also used by the mock exam. */
 (function (TP) {
   const { h } = TP;

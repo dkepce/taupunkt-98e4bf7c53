@@ -1,4 +1,4 @@
-/* Taupunkt — Prüfung: a mock exam in the real format. MC (multi-select) + Rechenbeispiele + Pflicht-Glaserdiagramm (7 of ~30 points), 2 h, 50 % to pass.
+/* Bauphysik — Prüfung: a mock exam in the real format. MC (multi-select) + Rechenbeispiele + Pflicht-Glaserdiagramm (7 of ~30 points), 2 h, 50 % to pass.
    While running, the sidebar is the exam navigator: timer, numbered questions (answered / flagged), hand-in. */
 (function (TP) {
   const { h } = TP;

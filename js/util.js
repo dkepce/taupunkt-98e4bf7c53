@@ -1,4 +1,4 @@
-/* Taupunkt — small helpers: element builder, number formatting, math + mini-markdown rendering */
+/* Bauphysik — small helpers: element builder, number formatting, math + mini-markdown rendering */
 (function (root) {
   const TP = (root.TP = root.TP || {});
   TP.tabs = TP.tabs || {};

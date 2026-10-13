@@ -1,6 +1,6 @@
 {
-  "name": "Taupunkt — Bauphysik",
-  "short_name": "Taupunkt",
+  "name": "Bauphysik — Prüfungstrainer",
+  "short_name": "Bauphysik",
   "description": "Exam preparation for Bauphysik (TU Wien): interactive labs, drills, mock exam.",
   "id": "/taupunkt-98e4bf7c53/",
   "start_url": "./",

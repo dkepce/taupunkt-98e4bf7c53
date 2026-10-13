@@ -1,4 +1,4 @@
-/* Taupunkt — Formeln: sidebar = view (Formelsammlung / Symbole / Tabellen) + sections; stage = search + cards.
+/* Bauphysik — Formeln: sidebar = view (Formelsammlung / Symbole / Tabellen) + sections; stage = search + cards.
    The exam sheet has no units and no variable names — "Prüfungsblatt-Modus" hides them so you can test yourself. */
 (function (TP) {
   const { h } = TP;

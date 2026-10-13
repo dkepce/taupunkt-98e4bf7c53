@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draws the Taupunkt app icon (axes, saturation curve, partial-pressure line, dew drop) as PNG 192/512 and apple-touch. Needs Pillow."""
+"""Draws the Bauphysik app icon (axes, saturation curve, partial-pressure line, dew drop) as PNG 192/512 and apple-touch. Needs Pillow."""
 from PIL import Image, ImageDraw
 from pathlib import Path
 

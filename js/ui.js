@@ -1,4 +1,4 @@
-/* Taupunkt — shared layout pieces: sidebar + stage, navigation rows, progress rings */
+/* Bauphysik — shared layout pieces: sidebar + stage, navigation rows, progress rings */
 (function (TP) {
   const { h, svg } = TP;
   TP.ui = TP.ui || {};

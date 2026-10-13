@@ -1,4 +1,4 @@
-/* Taupunkt — calculation generators.
+/* Bauphysik — calculation generators.
    Every generator makes a fresh exam-style task from a seed: prompt (German, like the exam), answer fields with tolerances, worked solution (English). */
 (function (TP) {
   const P = TP.phys;

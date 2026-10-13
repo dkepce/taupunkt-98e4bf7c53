@@ -1,4 +1,4 @@
-/* Taupunkt — layout: navy top bar with pill tabs · left sidebar for context · wide stage for the work.
+/* Bauphysik — layout: navy top bar with pill tabs · left sidebar for context · wide stage for the work.
    Same family as LabGorilla / Phoenix. No uppercase transforms: they would turn λ, µ, θ_si into other symbols. */
 :root {
   --bg: #f1efe8; --surface: #fbfaf7; --surface2: #efece3; --surface3: #e3e0d4;

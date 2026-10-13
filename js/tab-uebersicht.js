@@ -1,4 +1,4 @@
-/* Taupunkt — Übersicht: Heute (what to do now), Fortschritt (where you stand), Speicher & Einstellungen (save folder, backup, exam date, theme) */
+/* Bauphysik — Übersicht: Heute (what to do now), Fortschritt (where you stand), Speicher & Einstellungen (save folder, backup, exam date, theme) */
 (function (TP) {
   const { h, svg } = TP;
   const U = TP.ui;

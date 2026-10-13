@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tiny local web server for Taupunkt (no caching, so edits show on reload).  Run:  python tools/serve.py   → http://localhost:8130"""
+"""Tiny local web server for Bauphysik (no caching, so edits show on reload).  Run:  python tools/serve.py   → http://localhost:8130"""
 import http.server, socketserver, os, sys
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8130
@@ -17,5 +17,5 @@ class H(http.server.SimpleHTTPRequestHandler):
 
 socketserver.TCPServer.allow_reuse_address = True
 with socketserver.TCPServer(("", PORT), H) as s:
-    print("Taupunkt on http://localhost:%d  (Ctrl+C to stop)" % PORT)
+    print("Bauphysik on http://localhost:%d  (Ctrl+C to stop)" % PORT)
     s.serve_forever()

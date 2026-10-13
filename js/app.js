@@ -1,4 +1,4 @@
-/* Taupunkt — shell: header, tab routing, keyboard shortcuts, global search */
+/* Bauphysik — shell: header, tab routing, keyboard shortcuts, global search */
 (function (TP) {
   const { h, svg } = TP;
   const ORDER = ["uebersicht", "lernen", "labor", "ueben", "pruefung", "formeln"];
@@ -43,7 +43,7 @@
         svg("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "1.8", "stroke-linecap": "round", "stroke-linejoin": "round" },
           svg("path", { d: "M3 20h18M3 20V4" }), svg("path", { d: "M3 8c5 0 8 2 11 6s5 5 7 5", stroke: "#ff8a50" }), svg("path", { d: "M3 8c8 2 13 7 18 11", stroke: "#6aa5f5" }),
           svg("path", { d: "M12.5 9.2c0 0-1.7 2-1.7 3.2a1.7 1.7 0 0 0 3.4 0c0-1.2-1.7-3.2-1.7-3.2z", fill: "currentColor", stroke: "none" })),
-        "Taupunkt", h("small", "Bauphysik")),
+        "Bauphysik", h("small", "Prüfungstrainer")),
       h("nav.tabs", { role: "tablist" }, ORDER.map((id, i) => h("button.tab", { role: "tab", title: "Alt+" + (i + 1), "aria-selected": id === cur ? "true" : "false", onclick: () => TP.go(id) },
         h("span", { html: '<svg viewBox="0 0 24 24">' + ICON[id] + "</svg>" }), h("span", LABEL[id]), id === "ueben" && due ? h("span.badge", due > 99 ? "99+" : due) : null))),
       h("div.sp"),

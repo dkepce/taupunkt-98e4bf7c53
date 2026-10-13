@@ -1,4 +1,4 @@
-/* Taupunkt — more labs: Taupunkt & Schimmel (VO8/VO4), Wärmeeindringung (VO10), Operative Temperatur (VO6/VO12) */
+/* Bauphysik — more labs: Taupunkt & Schimmel (VO8/VO4), Wärmeeindringung (VO10), Operative Temperatur (VO6/VO12) */
 (function (TP) {
   const { h, svg } = TP;
   const P = TP.phys;

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Taupunkt content builder.
+Bauphysik content builder.
 
 Reads Doruk's Bauphysik Obsidian vault (READ ONLY) and writes the JSON files the app loads from ../data/:
   cards.json     question/answer cards (official question catalogues + concept questions)

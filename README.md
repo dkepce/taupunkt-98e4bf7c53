@@ -1,4 +1,4 @@
-# Taupunkt — Bauphysik exam trainer
+# Bauphysik — exam trainer
 
 A web app (plain HTML/CSS/JS, no build step, installable as a PWA) to prepare for the **Bauphysik** exam (TU Wien, Ulrich Pont, LVA 259.606). It turns the Obsidian vault in
 `G:\My Drive\02 Education\01 Lectures\06 Bauphysik\BAUPHYSIK\Bauphysik` into something you can *do*: explore, simulate, drill and take mock exams.
@@ -7,7 +7,7 @@ A web app (plain HTML/CSS/JS, no build step, installable as a PWA) to prepare fo
 
 ## Start it
 
-Double-click **`Start Taupunkt.bat`** in the folder above (or run `python tools/serve.py` inside `app/`), then open http://localhost:8130.
+Double-click **`Start Bauphysik.bat`** in the folder above (or run `python tools/serve.py` inside `app/`), then open http://localhost:8130.
 It must run through this little server (not by double-clicking `index.html`), because the browser blocks loading the data files from `file://`.
 Use Brave / Chrome / Edge: they can save into a folder you choose (File System Access API).
 

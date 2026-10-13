@@ -1,4 +1,4 @@
-/* Taupunkt — shared drawing helpers: nice axes, material hatches */
+/* Bauphysik — shared drawing helpers: nice axes, material hatches */
 (function (TP) {
   const { svg } = TP;
 

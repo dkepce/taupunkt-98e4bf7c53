@@ -1,4 +1,4 @@
-/* Taupunkt — shared wall model (layers + climate), the layer editor, and the "Wandaufbau" lab (U-value & temperature profile) */
+/* Bauphysik — shared wall model (layers + climate), the layer editor, and the "Wandaufbau" lab (U-value & temperature profile) */
 (function (TP) {
   const { h, svg } = TP;
   const P = TP.phys;

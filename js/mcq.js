@@ -1,4 +1,4 @@
-/* Taupunkt — multiple-choice bank in the exam's format (several options, any number can be right).
+/* Bauphysik — multiple-choice bank in the exam's format (several options, any number can be right).
    "official": taken from the course's own example exam questions (VO13 "Kumulative Prüfungsbeispiele").
    Others are derived from statements the lecturer flagged ("beliebte Prüfungsfrage") and the course notes.
    Option: [text, shouldBeMarked, why]. For "nicht korrekt" questions, shouldBeMarked already means "is one of the wrong statements". */

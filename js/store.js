@@ -1,7 +1,7 @@
-/* Taupunkt — progress data and saving.
+/* Bauphysik — progress data and saving.
    Everything you do (cards, quiz, calculations, ticks, exam results) is one small JSON object.
    It is always kept in the browser (localStorage). In addition you can pick a folder (File System Access API):
-   Taupunkt then writes Taupunkt.tpk into it after every change, so the progress lives where YOU choose (e.g. Google Drive). */
+   Bauphysik then writes Taupunkt.tpk into it after every change, so the progress lives where YOU choose (e.g. Google Drive). */
 (function (TP) {
   const KEY = "taupunkt.v1";
   const DEFAULT = () => ({
@@ -76,7 +76,7 @@
   }
   TP.writeFileNow = () => writeFile(true);
   async function readFile(dir) { const fh = await dir.getFileHandle(FILE); return JSON.parse(await (await fh.getFile()).text()); }
-  function check(j) { if (!j || j.app !== "taupunkt" || !j.data) throw new Error("not a Taupunkt file"); return j; }
+  function check(j) { if (!j || j.app !== "taupunkt" || !j.data) throw new Error("not a Bauphysik file"); return j; }
   TP.applyPayload = function (j) {
     check(j);
     TP.S = Object.assign(DEFAULT(), j.data);
@@ -124,7 +124,7 @@
   };
   TP.importFile = function () {
     const inp = TP.h("input", { type: "file", accept: ".tpk,application/json" });
-    inp.onchange = async () => { try { TP.applyPayload(JSON.parse(await inp.files[0].text())); TP.toast("Progress restored."); } catch (e) { TP.toast("That is not a Taupunkt file."); } };
+    inp.onchange = async () => { try { TP.applyPayload(JSON.parse(await inp.files[0].text())); TP.toast("Progress restored."); } catch (e) { TP.toast("That is not a Bauphysik file."); } };
     inp.click();
   };
   window.addEventListener("beforeunload", () => { try { TP.save(); } catch (e) { } });

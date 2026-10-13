@@ -1,4 +1,4 @@
-/* Taupunkt — Labor: lab list + controls in the sidebar, results (charts, numbers, explanation) in the wide stage */
+/* Bauphysik — Labor: lab list + controls in the sidebar, results (charts, numbers, explanation) in the wide stage */
 (function (TP) {
   const { h } = TP;
   const U = TP.ui;
