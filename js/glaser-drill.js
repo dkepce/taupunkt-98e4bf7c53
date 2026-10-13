@@ -110,7 +110,7 @@
         fb.appendChild(h("div.callout." + (score > 0.85 ? "ok" : score > 0.55 ? "warn" : "bad"),
           h("b", TP.fmt(pts, 1) + " von 7 Punkten"), " — " + ok + " von " + tot + " Eintragungen richtig, Zeit " + mm + ":" + ss + (secs <= 20 * 60 ? " (im Zielfenster)" : " (über 20 Minuten: noch mehr üben)"), "."));
         fb.appendChild(h("div.callout", g.condensate ? [h("b", "Befund: "), "p > p_S an der Grenze nach Schicht " + g.tau.k + " (" + st.rows[g.tau.k - 1].name + "): Taupunkt s_d,e = " + TP.fmt(g.main.sdE, 2) + " m. G_K = " + TP.fmt(g.GK, 3) + " kg/m², G_A = " + TP.fmt(g.GA, 3) + " kg/m² → " + (g.dried ? "trocknet vollständig aus." : "trocknet NICHT vollständig aus.") + (g.woodHit ? " Holzbauteile dürfen kein Kondensat zeigen." : "")] : [h("b", "Befund: "), "p < p_S überall — kein Kondensat. Tau-/Trockenperiode entfallen."]));
-        const card = h("div.card.pad", h("h3", "So sieht das Diagramm aus"), TP.glaserChart(g, t.cond, "tau"));
+        const card = h("div.card.pad", h("h3", "So sieht das Diagramm aus"), TP.ui.chartHost(w => TP.glaserChart(g, t.cond, "tau", w)));
         fb.appendChild(card);
         if (!opts.exam) fb.appendChild(h("div.row", { style: { justifyContent: "flex-end" } }, h("button.btn.primary", { onclick: () => fresh() }, "Nächste Aufgabe")));
         btn.disabled = true;

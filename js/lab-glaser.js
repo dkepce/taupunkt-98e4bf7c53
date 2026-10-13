@@ -9,8 +9,8 @@
   TP.sciTex = sci; TP.txNum = tx;
 
   /* ---------- the diagram ---------- */
-  function chart(g, cond, which) {
-    const VW = 780, VH = 460, band = 16, T = 40, B = 318, xL = 74 + band, xR = VW - 26 - band;
+  function chart(g, cond, which, W) {
+    const VW = W || 780, VH = 460, band = 16, T = 40, B = 318, xL = 74 + band, xR = VW - 26 - band;
     const s = svg("svg", { class: "chart", viewBox: `0 0 ${VW} ${VH}`, role: "img", "aria-label": "Glaser diagram" });
     const pfx = "g" + TP.uid() + "-";
     s.appendChild(TP.matDefs(pfx));
@@ -27,7 +27,7 @@
     ya.ticks.forEach(t => { grid.appendChild(svg("line", { x1: xL - band, x2: xR + band, y1: Y(t), y2: Y(t) })); s.appendChild(svg("text", { class: "gridlbl", x: xL - band - 8, y: Y(t) + 4, "text-anchor": "end" }, TP.fmt(t, 0))); });
     xa.ticks.filter(t => t <= S + 1e-9).forEach(t => { grid.appendChild(svg("line", { x1: X(t), x2: X(t), y1: T, y2: B })); s.appendChild(svg("text", { class: "gridlbl", x: X(t), y: B + 60, "text-anchor": "middle" }, TP.fmt(t, xa.step < 1 ? 1 : 0))); });
     s.insertBefore(grid, s.children[1]);
-    s.appendChild(svg("text", { x: 4, y: T - 18, style: "font-size:12px;fill:var(--ink3)" }, "Dampfdruck p, p_S in Pa"));
+    s.appendChild(svg("text", { x: 4, y: T - 18, style: "font-size:13px;fill:var(--ink3)" }, "Dampfdruck p, p_S in Pa"));
     // layer bands under the axis
     const by = B + 8, bh = 34;
     s.appendChild(svg("rect", { x: xL - band, y: by, width: band, height: bh, fill: "var(--surface3)", stroke: "var(--ink3)", "stroke-width": .8 }));
@@ -35,9 +35,9 @@
     g.st.rows.forEach((r, i) => {
       const x1 = X(g.x[i]), x2 = X(g.x[i + 1]), w = Math.max(1.2, x2 - x1);
       s.appendChild(svg("rect", { x: x1, y: by, width: w, height: bh, fill: TP.matPaint(pfx, r.kind), stroke: "var(--ink3)", "stroke-width": .8 }));
-      if (w > 15) s.appendChild(svg("text", { x: x1 + w / 2, y: by + bh / 2 + 4, "text-anchor": "middle", style: "font-weight:700;font-size:12px;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px" }, i + 1));
+      if (w > 15) s.appendChild(svg("text", { x: x1 + w / 2, y: by + bh / 2 + 4, "text-anchor": "middle", style: "font-weight:700;font-size:13px;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px" }, i + 1));
     });
-    s.appendChild(svg("text", { x: (xL + xR) / 2, y: VH - 4, "text-anchor": "middle", style: "font-size:12px;fill:var(--ink3)" }, "µ · d  (äquivalente Luftschichtdicke s_d) in m — ein Maßstab, nicht gestaucht"));
+    s.appendChild(svg("text", { x: (xL + xR) / 2, y: VH - 4, "text-anchor": "middle", style: "font-size:13px;fill:var(--ink3)" }, "µ · d  (äquivalente Luftschichtdicke s_d) in m — ein Maßstab, nicht gestaucht"));
     s.appendChild(svg("line", { x1: xL, x2: xR, y1: B, y2: B, class: "ax" }));
     s.appendChild(svg("line", { x1: xL, x2: xL, y1: T, y2: B, class: "ax" }));
 
@@ -61,24 +61,24 @@
     // end markers
     [[X(0), pa, "p_i"], [X(S), pb, "p_e"]].forEach(([x, p, lab], i) => {
       s.appendChild(svg("circle", { cx: x, cy: Y(p), r: 4.2, fill: "var(--p)" }));
-      s.appendChild(svg("text", { x: x + (i ? -8 : 8), y: Y(p) - 9, "text-anchor": i ? "end" : "start", style: "font-weight:700;font-size:12px;fill:var(--p)" }, (dry ? lab + "' " : lab + " ") + TP.fmt(p, 0) + " Pa"));
+      s.appendChild(svg("text", { x: x + (i ? -8 : 8), y: Y(p) - 9, "text-anchor": i ? "end" : "start", style: "font-weight:700;font-size:13px;fill:var(--p)" }, (dry ? lab + "' " : lab + " ") + TP.fmt(p, 0) + " Pa"));
     });
     // Taupunkt annotations
     if (g.condensate && g.tau) {
       const m = g.main, xT = X(m.sdE);
       if (!dry) {
         s.appendChild(svg("circle", { cx: xT, cy: Y(g.tau.ps), r: 6, fill: "var(--surface)", stroke: "var(--ps)", "stroke-width": 2.6 }));
-        s.appendChild(svg("text", { x: xT, y: Y(g.tau.ps) + 22, "text-anchor": "middle", style: "font-weight:700;font-size:12px;fill:var(--ps)" }, "Taupunkt  p_S = " + TP.fmt(g.tau.ps, 0) + " Pa"));
+        s.appendChild(svg("text", { x: xT, y: Y(g.tau.ps) + 22, "text-anchor": "middle", style: "font-weight:700;font-size:13px;fill:var(--ps)" }, "Taupunkt  p_S = " + TP.fmt(g.tau.ps, 0) + " Pa"));
         [[X(0), xT, "s_d,e", m.sdE], [xT, X(S), "s_d,a", m.sdA]].forEach(([a, b, lab, v]) => {
           const y = T - 6;
           s.appendChild(svg("path", { d: `M${a} ${y - 5}V${y + 5}M${a} ${y}H${b}M${b} ${y - 5}V${y + 5}`, stroke: "var(--ink2)", "stroke-width": 1.3, fill: "none" }));
-          s.appendChild(svg("text", { x: (a + b) / 2, y: y - 8, "text-anchor": "middle", style: "font-size:12px;font-weight:600;fill:var(--ink)" }, lab + " = " + TP.fmt(v, 2) + " m"));
+          s.appendChild(svg("text", { x: (a + b) / 2, y: y - 8, "text-anchor": "middle", style: "font-size:13px;font-weight:600;fill:var(--ink)" }, lab + " = " + TP.fmt(v, 2) + " m"));
         });
         s.appendChild(svg("line", { x1: xT, x2: xT, y1: T, y2: Y(g.tau.ps), stroke: "var(--ink3)", "stroke-width": 1, "stroke-dasharray": "2 3" }));
       } else if (g.dry.planes.length) {
         g.dry.planes.forEach(pl => { s.appendChild(svg("circle", { cx: X(pl.x), cy: Y(pl.psD), r: 5.5, fill: "var(--surface)", stroke: "var(--ps)", "stroke-width": 2.4 })); });
         const pl = g.mainDry;
-        s.appendChild(svg("text", { x: X(pl.x), y: Y(pl.psD) - 12, "text-anchor": "middle", style: "font-weight:700;font-size:12px;fill:var(--ps)" }, "Kondensatebene: 100 % → p_S = " + TP.fmt(pl.psD, 0) + " Pa"));
+        s.appendChild(svg("text", { x: X(pl.x), y: Y(pl.psD) - 12, "text-anchor": "middle", style: "font-weight:700;font-size:13px;fill:var(--ps)" }, "Kondensatebene: 100 % → p_S = " + TP.fmt(pl.psD, 0) + " Pa"));
       }
     }
     // hover
@@ -167,7 +167,7 @@
         card.appendChild(h("div.row.between", h("h3", "Glaser-Diagramm"),
           h("div.seg", h("button", { "aria-pressed": mode === "tau" ? "true" : "false", onclick: () => { mode = "tau"; draw(); } }, "Tauperiode (Winter)"), h("button", { "aria-pressed": mode === "dry" ? "true" : "false", onclick: () => { mode = "dry"; draw(); } }, "Trockenperiode (Sommer)"))));
         if (mode === "dry" && !g.dry) card.appendChild(h("div.callout", "No condensate in this wall — there is nothing to dry out. The Trockenperiode is only needed when the Tauperiode shows condensate."));
-        card.appendChild(chart(g, c, mode === "dry" && g.dry ? "dry" : "tau"));
+        card.appendChild(TP.ui.chartHost(w => chart(g, c, mode === "dry" && g.dry ? "dry" : "tau", w)));
         card.appendChild(h("div.legend-row", { style: { marginTop: "6px" } },
           h("span", h("i", { style: { background: "var(--p)" } }), "Partialdruck p"), h("span", h("i", { style: { background: "var(--ps)" } }), "Sättigungsdruck p_S (Polygonzug)"),
           mode === "tau" ? h("span", h("i", { style: { background: "var(--ink)", height: "2px" } }), "Seileck") : null,

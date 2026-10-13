@@ -136,6 +136,7 @@
   }
   TP.wallChart = function (st, cond, opt) {
     opt = opt || {};
+    const VW = opt.W || 780;            // drawn at the real pixel width (see U.chartHost), so text keeps its size
     const pfx = "w" + TP.uid() + "-";
     const s = svg("svg", { class: "chart", viewBox: `0 0 ${VW} 470`, role: "img", "aria-label": "Wall section and temperature profile" });
     s.appendChild(TP.matDefs(pfx));
@@ -144,13 +145,13 @@
     const y0 = 30, hs = 92;
     s.appendChild(svg("rect", { x: g.left, y: y0, width: g.bandPx, height: hs, fill: "color-mix(in srgb, var(--ps) 14%, transparent)" }));
     s.appendChild(svg("rect", { x: g.right - g.bandPx, y: y0, width: g.bandPx, height: hs, fill: "color-mix(in srgb, var(--p) 14%, transparent)" }));
-    s.appendChild(svg("text", { x: g.left + 4, y: y0 - 10, style: "font-weight:700;letter-spacing:.08em;font-size:11px" }, "INNEN"));
-    s.appendChild(svg("text", { x: g.right - 4, y: y0 - 10, "text-anchor": "end", style: "font-weight:700;letter-spacing:.08em;font-size:11px" }, "AUSSEN"));
+    s.appendChild(svg("text", { x: g.left + 4, y: y0 - 10, style: "font-weight:700;letter-spacing:.08em;font-size:12px" }, "INNEN"));
+    s.appendChild(svg("text", { x: g.right - 4, y: y0 - 10, "text-anchor": "end", style: "font-weight:700;letter-spacing:.08em;font-size:12px" }, "AUSSEN"));
     rows.forEach((r, i) => {
       const x = g.xs[i], w = g.xs[i + 1] - x;
       s.appendChild(svg("rect", { x, y: y0, width: w, height: hs, fill: TP.matPaint(pfx, r.kind), stroke: "var(--ink3)", "stroke-width": 1 }));
-      s.appendChild(svg("text", { x: x + w / 2, y: y0 + hs + 17, "text-anchor": "middle", style: "font-weight:700;font-size:12px" }, i + 1));
-      if (w > 56) s.appendChild(svg("text", { x: x + w / 2, y: y0 + hs + 32, "text-anchor": "middle", style: "font-size:11px;fill:var(--ink3)" }, TP.fmt(r.d * 1000, r.d < 0.005 ? 1 : 0) + " mm"));
+      s.appendChild(svg("text", { x: x + w / 2, y: y0 + hs + 17, "text-anchor": "middle", style: "font-weight:700;font-size:13px" }, i + 1));
+      if (w > 56) s.appendChild(svg("text", { x: x + w / 2, y: y0 + hs + 32, "text-anchor": "middle", style: "font-size:12px;fill:var(--ink3)" }, TP.fmt(r.d * 1000, r.d < 0.005 ? 1 : 0) + " mm"));
     });
     /* temperature plot */
     const top = 190, bot = 420, ys = [st.thSi, st.thSe, cond.ti, cond.te, 0];
@@ -160,7 +161,7 @@
     const grid = svg("g.grid");
     ax.ticks.forEach(t => { grid.appendChild(svg("line", { x1: g.left, x2: g.right, y1: Y(t), y2: Y(t) })); s.appendChild(svg("text", { class: "gridlbl", x: g.left - 8, y: Y(t) + 4, "text-anchor": "end" }, TP.fmt(t, 0))); });
     s.insertBefore(grid, s.children[1]);
-    s.appendChild(svg("text", { x: 4, y: top - 12, style: "font-size:12px;fill:var(--ink3)" }, "Temperatur θ in °C"));
+    s.appendChild(svg("text", { x: 4, y: top - 12, style: "font-size:13px;fill:var(--ink3)" }, "Temperatur θ in °C"));
     if (ax.min < 0 && ax.max > 0) s.appendChild(svg("line", { x1: g.left, x2: g.right, y1: Y(0), y2: Y(0), stroke: "var(--ink3)", "stroke-width": 1.2 }));
     // layer boundaries as thin vertical guides
     g.xs.forEach(x => s.appendChild(svg("line", { x1: x, x2: x, y1: y0 + hs, y2: bot, stroke: "var(--line)", "stroke-width": 1, "stroke-dasharray": "2 3" })));
@@ -171,16 +172,16 @@
     // dew-point line of the indoor air
     if (opt.dew != null) {
       s.appendChild(svg("line", { x1: g.left, x2: g.right, y1: Y(opt.dew), y2: Y(opt.dew), stroke: "var(--ps)", "stroke-width": 1.6, "stroke-dasharray": "7 4" }));
-      s.appendChild(svg("text", { x: g.right - 4, y: Y(opt.dew) - 6, "text-anchor": "end", style: "fill:var(--ps);font-size:12px;font-weight:600" }, "Taupunkt Innenluft " + TP.fmt(opt.dew, 1) + " °C"));
+      s.appendChild(svg("text", { x: g.right - 4, y: Y(opt.dew) - 6, "text-anchor": "end", style: "fill:var(--ps);font-size:13px;font-weight:600" }, "Taupunkt Innenluft " + TP.fmt(opt.dew, 1) + " °C"));
     }
     s.appendChild(svg("path", { class: "tline", d: pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + Y(p[1]).toFixed(1)).join("") }));
     [1, pts.length - 2].forEach(i => s.appendChild(svg("circle", { cx: pts[i][0], cy: Y(pts[i][1]), r: 4.2, fill: "var(--surface)", stroke: "var(--accent)", "stroke-width": 2 })));
-    s.appendChild(svg("text", { x: g.xSi + 8, y: Y(st.thSi) - 10, style: "font-size:12px;font-weight:600;fill:var(--ink)" }, "θ_si " + TP.fmt(st.thSi, 1) + " °C"));
-    s.appendChild(svg("text", { x: g.xSe - 8, y: Y(st.thSe) - 10, "text-anchor": "end", style: "font-size:12px;font-weight:600;fill:var(--ink)" }, "θ_se " + TP.fmt(st.thSe, 1) + " °C"));
+    s.appendChild(svg("text", { x: g.xSi + 8, y: Y(st.thSi) - 10, style: "font-size:13px;font-weight:600;fill:var(--ink)" }, "θ_si " + TP.fmt(st.thSi, 1) + " °C"));
+    s.appendChild(svg("text", { x: g.xSe - 8, y: Y(st.thSe) - 10, "text-anchor": "end", style: "font-size:13px;font-weight:600;fill:var(--ink)" }, "θ_se " + TP.fmt(st.thSe, 1) + " °C"));
     s.appendChild(svg("line", { x1: g.left, x2: g.right, y1: bot, y2: bot, class: "ax" }));
-    s.appendChild(svg("text", { x: g.left + g.bandPx / 2, y: bot + 16, "text-anchor": "middle", style: "font-size:10.5px;fill:var(--ink3)" }, "R_si"));
-    s.appendChild(svg("text", { x: g.right - g.bandPx / 2, y: bot + 16, "text-anchor": "middle", style: "font-size:10.5px;fill:var(--ink3)" }, "R_se"));
-    s.appendChild(svg("text", { x: (g.xSi + g.xSe) / 2, y: bot + 34, "text-anchor": "middle", style: "font-size:12px;fill:var(--ink3)" }, "Position im Bauteil (maßstäblich, dünne Schichten verbreitert)"));
+    s.appendChild(svg("text", { x: g.left + g.bandPx / 2, y: bot + 16, "text-anchor": "middle", style: "font-size:11.5px;fill:var(--ink3)" }, "R_si"));
+    s.appendChild(svg("text", { x: g.right - g.bandPx / 2, y: bot + 16, "text-anchor": "middle", style: "font-size:11.5px;fill:var(--ink3)" }, "R_se"));
+    s.appendChild(svg("text", { x: (g.xSi + g.xSe) / 2, y: bot + 34, "text-anchor": "middle", style: "font-size:13px;fill:var(--ink3)" }, "Position im Bauteil (maßstäblich, dünne Schichten verbreitert)"));
     /* hover */
     const cross = svg("line", { class: "cross", y1: y0, y2: bot, style: { display: "none" } }), dot = svg("circle", { r: 5, fill: "var(--accent)", style: { display: "none" } });
     s.appendChild(cross); s.appendChild(dot);
@@ -251,7 +252,7 @@
         notes.push(st.thSi <= dew ? "θ_si liegt unter dem Taupunkt der Innenluft (" + TP.fmt(dew, 1) + " °C): Oberflächenkondensat!" : "θ_si liegt über dem Taupunkt der Innenluft (" + TP.fmt(dew, 1) + " °C): kein Oberflächenkondensat.");
         main.appendChild(h("div.callout" + (st.U <= uLim && st.thSi > dew ? ".ok" : ".warn"), notes.map(t => h("div", t))));
         const card = h("div.card.pad", h("div.row.between", h("h3", "Temperaturverlauf"), h("span.faint", { style: { fontSize: "12.5px" } }, "Maus über das Diagramm bewegen")));
-        card.appendChild(TP.wallChart(st, c, { dew }));
+        card.appendChild(TP.ui.chartHost(w => TP.wallChart(st, c, { dew, W: w })));
         card.appendChild(h("div.legend-row", { style: { marginTop: "6px" } }, h("span", h("i", { style: { background: "var(--accent)" } }), "θ(x)"), h("span", h("i", { style: { background: "var(--ps)" } }), "Taupunkt der Innenluft (Θ_S = φ^(1/8)·(110+θ_L) − 110)")));
         const fb = h("div.card.pad", h("h3", "Formblatt (wie in der Prüfung)"), h("div", { style: { marginTop: "8px" } }, TP.formblatt(st, c, null)),
           h("div.faint", { style: { fontSize: "12.5px", marginTop: "8px" } }, "R = d/λ → R_T = R_si + ΣR + R_se → U = 1/R_T → q̇ = U·(θ_i − θ_e) → θ_n = θ_(n−1) − q̇·R_n"));

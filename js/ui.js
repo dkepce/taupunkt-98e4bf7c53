@@ -65,6 +65,35 @@
     return s;
   };
 
-  U.pageHead = (title, sub, right) => h("div.page-head", h("div", h("h1", title), sub ? h("p", sub) : null), right || null);
+  /* Charts are drawn at their REAL pixel width (viewBox = rendered size), so text is always the same readable size and never gets
+     stretched. build(w) must return an <svg>; it is called again whenever the container is resized. */
+  U.chartHost = function (build, opt) {
+    opt = opt || {};
+    const maxW = opt.maxW || 1100, minW = opt.minW || 300;
+    const host = h("div", { style: { width: "100%", minWidth: 0 } });
+    let last = 0;
+    const draw = () => {
+      const w = Math.max(minW, Math.min(maxW, Math.floor(host.clientWidth)));
+      if (!host.clientWidth || w === last) return;
+      last = w; TP.clear(host);
+      const el = build(w);
+      el.style.maxWidth = w + "px"; el.style.margin = "0 auto";
+      host.appendChild(el);
+    };
+    if (window.ResizeObserver) new ResizeObserver(draw).observe(host);
+    requestAnimationFrame(draw);
+    setTimeout(draw, 30); setTimeout(draw, 250);        // fallbacks: animation frames and observers pause while a window is hidden
+    return host;
+  };
+
+  /* horizontal gauge in plain HTML (no stretched text): marks = [{ at, c, t }] */
+  U.gauge = function (label, v, lo, hi, marks, fmtv) {
+    const pos = x => Math.max(0, Math.min(100, (x - lo) / (hi - lo) * 100)) + "%";
+    return h("div", h("div.label", label),
+      h("div.gauge", h("div.gtrack"), marks.map(m => h("i.gmark", { style: { left: pos(m.at), background: m.c } })), h("div.gthumb", { style: { left: pos(v) } }, h("b", fmtv(v)))),
+      h("div.legend-row", marks.map(m => h("span", h("i", { style: { background: m.c, width: "4px", height: "14px" } }), m.t))));
+  };
+
+  U.pageHead =(title, sub, right) => h("div.page-head", h("div", h("h1", title), sub ? h("p", sub) : null), right || null);
   U.kpi = (label, v, unit, cls) => h("div.kpi" + (cls ? "." + cls : ""), h("div.label", label), h("div.v", v, unit ? h("small", unit) : null));
 })(window.TP);

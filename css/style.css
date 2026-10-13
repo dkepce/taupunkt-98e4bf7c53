@@ -233,14 +233,19 @@ table.data input.num { padding: 3px 6px; width: 92px; }
 .layer .mini { display: flex; flex-direction: column; gap: 2px; min-width: 0; } .layer .meta { font-size: 11px; color: var(--ink3); font-family: var(--mono); }
 .layer .ctl { display: flex; flex-direction: column; } .layer .ctl button { border: 0; background: none; cursor: pointer; color: var(--ink3); padding: 0; line-height: 1; height: 14px; font-size: 10px; } .layer .ctl button:hover { color: var(--ink); }
 .layer.drag { opacity: .5; }
+.gauge { position: relative; height: 56px; margin: 4px 0 6px; }
+.gauge .gtrack { position: absolute; left: 0; right: 0; top: 34px; height: 10px; border-radius: 5px; background: var(--surface3); }
+.gauge .gmark { position: absolute; top: 28px; width: 3px; height: 22px; transform: translateX(-50%); border-radius: 2px; }
+.gauge .gthumb { position: absolute; top: 29px; width: 20px; height: 20px; transform: translateX(-50%); border-radius: 50%; background: var(--accent); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line); }
+.gauge .gthumb b { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); font-size: 15px; white-space: nowrap; font-family: var(--mono); }
 .chart { width: 100%; height: auto; display: block; user-select: none; }
-.chart text { font-family: var(--font); fill: var(--ink2); font-size: 12px; }
+.chart text { font-family: var(--font); fill: var(--ink2); font-size: 13px; }
 .chart .ax { stroke: var(--ink3); stroke-width: 1; } .chart .grid line { stroke: var(--line2); stroke-width: 1; }
-.chart .gridlbl { font-size: 11px; fill: var(--ink3); font-family: var(--mono); }
+.chart .gridlbl { font-size: 12px; fill: var(--ink3); font-family: var(--mono); }
 .chart .pline { stroke: var(--p); stroke-width: 2.4; fill: none; } .chart .psline { stroke: var(--ps); stroke-width: 2.4; fill: none; stroke-linejoin: round; }
 .chart .rope { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; } .chart .condzone { fill: var(--cond); }
 .chart .tline { stroke: var(--accent); stroke-width: 2.6; fill: none; stroke-linejoin: round; } .chart .cross { stroke: var(--ink3); stroke-width: 1; stroke-dasharray: 3 3; }
-.chart .tip rect { fill: var(--ink); } .chart .tip text { fill: var(--bg); font-size: 12px; font-family: var(--mono); }
+.chart .tip rect { fill: var(--ink); } .chart .tip text { fill: var(--bg); font-size: 13px; font-family: var(--mono); }
 .legend-row { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink2); }
 .legend-row i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
 .goal { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border: 1px dashed var(--line); border-radius: var(--r2); background: var(--surface); } .goal.done { border: 1px solid var(--ok); background: var(--ok-soft); }
