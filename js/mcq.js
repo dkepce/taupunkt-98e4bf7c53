@@ -205,6 +205,26 @@
       ["Bauphysiker und Statiker verfolgen im Dachausbau stets dasselbe Ziel (möglichst leicht).", false, "Conflict of aims: mass vs. light."], ["Außenliegende Verschattung ist wirksamer als innenliegende.", true],
     ]),
 
+    Q("m11c", 11, "Sonnenbahndiagramm (Wien, 48° N): Welche Aussagen stimmen?", [
+      ["Um 12 h Sonnenzeit steht die Sonne genau im Süden (Azimut 180°).", true], ["Die Sonnenhöhe ist im Sommer (21.6.) größer als im Winter (21.12.).", true, "≈ 63–65° vs. ≈ 17–18° at midday."],
+      ["Das Diagramm zeigt Sommerzeit (MESZ).", false, "It shows true solar time; with summer time the sun is due south at ≈ 13:00–13:30."], ["Die Mittagshöhe der Sonne ist zu den Tag-und-Nacht-Gleichen (21.3. / 23.9.) am größten.", false, "The maximum is at the summer solstice."],
+      ["Die Sonnenbahn der Tag-und-Nacht-Gleichen verläuft von genau Ost nach genau West.", true],
+    ]),
+    Q("m11d", 11, "Sonnenstand & Verschattung: Welche Aussagen sind korrekt?", [
+      ["Die Neigung der Erdachse (≈ 23,45°) verursacht die jahreszeitlich unterschiedliche Sonnenhöhe.", true], ["Horizontüberhöhung ist der Teil des Sonnenbahndiagramms, der durch Berge oder Nachbargebäude abgeschnitten wird.", true],
+      ["Ein fixer Überhang schattiert im Sommer (hohe Sonne) stärker als im Winter (tiefe Sonne).", true], ["In der Zylinderprojektion blickt man nach Norden.", false, "Cylinder projection looks south (0° = south in the lecture), so the horizon profile can be drawn in."],
+      ["Die Mittagshöhe h = 90° − φ + δ gilt für jeden Standort der Nordhalbkugel.", true, "δ = +23,45° (summer), 0° (equinox), −23,45° (winter)."],
+    ]),
+    Q("m11e", 11, "Direkt-, Diffus- und Globalstrahlung: Welche Aussagen stimmen?", [
+      ["E_H = ⅓·[E₀·sin(h) − E_S,H]", true], ["E_Glob = E_S,H + E_H", true], ["E_S,H wird aus einem Diagramm (T, p/p₀, Sonnenhöhe) abgelesen.", true],
+      ["Der Trübungsfaktor T beträgt im Sommer in der Stadt 6.", true], ["Der Trübungsfaktor T beträgt im Winter auf dem Land 6.", false, "Winter, countryside: T = 2."],
+      ["Die Solarkonstante beträgt etwa 1390 W/m² und ist die Strahlung am Erdboden.", false, "It is the extraterrestrial radiation at the top of the atmosphere."],
+    ]),
+    Q("m07a", 7, "Heizwärmebedarf: Welche Aussagen sind korrekt?", [
+      ["Q_H = [Φ_T + Φ_V − η_h·(Φ_S + Φ_I)]·Δt", true], ["Der Ausnutzungsgrad η_h gewichtet nur die Gewinne, nicht die Verluste.", true], ["Eine größere Wärmespeichermasse erhöht τ und damit η_h.", true],
+      ["Je größer γ_h = Gewinne/Verluste, desto größer ist η_h.", false, "η_h falls as γ_h rises: more of the gains arrive when they are not needed."], ["τ = C / (H_T + H_V)", true], ["Mit τ₀ = 16 h und a₀ = 1 gilt a = a₀ · τ / τ₀.", false, "a = a₀ + τ/τ₀ (sum, not product)."],
+    ]),
+
     /* ---------- M12 OI3 ---------- */
     Q("m12a", 12, "OI3-Index: Welche Aussagen sind korrekt?", [
       ["OI3_KON ist das arithmetische Mittel der drei Bewertungsfunktionen OI_PECnr, OI_GWP und OI_AP.", true], ["Einzelne Teilindikatoren (z. B. OI_AP) dürfen negative Werte annehmen.", true, "The guide explicitly allows negative partial points."],

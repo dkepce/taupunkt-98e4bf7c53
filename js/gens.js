@@ -170,6 +170,57 @@
       fields: [F("ht", "H_T", "W/K", HT), F("phi", "Φ_T", "W", Phi)], steps: "$$H_T=\\sum A_iU_i=" + n(A - aF, 0) + "\\cdot" + n(Uw, 2) + "+" + n(aF, 0) + "\\cdot" + n(Uf, 2) + "=" + n(HT, 2) + "\\ \\mathrm{W/K},\\qquad \\Phi_T=H_T\\,\\Delta\\theta=" + n(HT, 2) + "\\cdot" + n(ti - te, 1) + "=" + n(Phi, 0) + "\\ \\mathrm{W}$$" };
   });
 
+  /* ---- M07 chain: interne Gewinne → Ausnutzungsgrad → Heizwärmebedarf (VO7 Übung 5–7) ---- */
+  add("interne", 7, "Interne Gewinne Φ_I (Büro)", r => {
+    const np = pick([1, 2, 3], r), pp = pick([80, 100, 120], r), hp = pick([6, 8, 10], r), nc = pick([1, 2, 3], r), pc = pick([100, 150, 200], r), pd = pick([80, 100, 150], r), hd = pick([1, 2], r);
+    const a = pick([4, 5, 6], r), b = pick([5, 6, 8], r), q = pick([5, 6, 8], r), A = a * b;
+    const PP = np * pp * hp / 24, PA = nc * pc * hp / 24 + pd * hd / 24, PL = q * A, Phi = PP + PA + PL;
+    return { prompt: "Büroraum " + a + " m × " + b + " m. " + np + " Person(en) à " + pp + " W, " + hp + " h/Tag anwesend. " + nc + " PC(s) à " + pc + " W, " + hp + " h/Tag in Betrieb. 1 Drucker à " + pd + " W, " + hd + " h/Tag. Beleuchtung " + q + " W/m² (läuft durchgehend, wie im Beispiel der VO). Berechnen Sie die mittleren internen Gewinne Φ_I (Mittelung über 24 h).",
+      fields: [F("pp", "P_Personen", "W", PP), F("pa", "P_Geräte", "W", PA), F("pl", "P_Licht", "W", PL), F("phi", "Φ_I", "W", Phi)],
+      steps: "$$P_P=\\frac{" + np + "\\cdot" + pp + "\\cdot" + hp + "}{24}=" + n(PP, 1) + ",\\quad P_A=\\frac{" + nc + "\\cdot" + pc + "\\cdot" + hp + "}{24}+\\frac{" + pd + "\\cdot" + hd + "}{24}=" + n(PA, 1) + ",\\quad P_L=" + q + "\\cdot" + A + "=" + n(PL, 0) + "$$\n$$\\Phi_I=P_P+P_A+P_L=" + n(Phi, 1) + "\\ \\mathrm{W}$$\nPersons and devices are averaged over 24 h (hours ÷ 24); the lighting runs at full power all day in the lecture example." };
+  });
+  add("ausnutz", 7, "Ausnutzungsgrad η_h (τ, a, γ)", r => {
+    const HT = pick([8, 10, 12.6, 15, 20, 25], r), HV = pick([10, 15, 20, 25], r), dT = pick([15, 20, 23], r), C = pick([2, 3.16, 4, 6, 10], r);
+    const PT = HT * dT, PV = HV * dT; let PS, PI, g;
+    do { PS = rstep(100, 1500, 25, r); PI = rstep(100, 500, 10, r); g = (PS + PI) / (PT + PV); } while (Math.abs(g - 1) < 0.12 || g > 3.2);
+    const tau = C * 1e6 / (HT + HV) / 3600, a = 1 + tau / 16, eta = (1 - Math.pow(g, a)) / (1 - Math.pow(g, a + 1));
+    return { prompt: "Raum mit H_T = " + f(HT, 1) + " W/K, H_V = " + f(HV, 1) + " W/K, Δθ = θ_i − θ_e = " + dT + " K, Wärmekapazität C = " + f(C, 2) + " MJ/K. Solare Gewinne Φ_S = " + PS + " W, interne Gewinne Φ_I = " + PI + " W. Berechnen Sie die Zeitkonstante τ, den Parameter a (a₀ = 1, τ₀ = 16 h), das Gewinn/Verlust-Verhältnis γ_h und den Ausnutzungsgrad η_h.",
+      fields: [F("tau", "τ", "h", tau), F("a", "a", "–", a), F("g", "γ_h", "–", g), F("eta", "η_h", "–", eta, 0.025, 0.01)],
+      steps: "$$\\Phi_T+\\Phi_V=(" + n(HT, 1) + "+" + n(HV, 1) + ")\\cdot" + dT + "=" + n(PT + PV, 0) + "\\ \\mathrm{W}$$\n$$\\tau=\\frac{C}{H_T+H_V}=\\frac{" + n(C, 2) + "\\cdot10^6}{" + n(HT + HV, 1) + "}=" + n(tau * 3600, 0) + "\\ \\mathrm{s}=" + n(tau, 1) + "\\ \\mathrm{h},\\qquad a=1+\\frac{\\tau}{16}=" + n(a, 2) + "$$\n$$\\gamma_h=\\frac{\\Phi_S+\\Phi_I}{\\Phi_T+\\Phi_V}=\\frac{" + (PS + PI) + "}{" + n(PT + PV, 0) + "}=" + n(g, 2) + ",\\qquad \\eta_h=\\frac{1-\\gamma^{a}}{1-\\gamma^{a+1}}=" + n(eta, 3) + "$$\nExam tip: keep full intermediate values in the calculator; γ^a is very sensitive to rounding." };
+  });
+  add("energiekz", 7, "Heizwärmebedarf Q_H & Energiekennzahl", r => {
+    const PT = rstep(150, 350, 10, r), PV = rstep(100, 300, 10, r), eta = rstep(0.35, 0.9, 0.05, r), PI = rstep(100, 400, 10, r), AE = pick([20, 30, 40, 60], r);
+    const mo = pick([["Januar", 31], ["Februar", 28], ["März", 31], ["April", 30], ["Oktober", 31], ["November", 30], ["Dezember", 31]], r);
+    const gain = Math.round((PT + PV) * rstep(0.3, 0.95, 0.05, r) / eta / 10) * 10, PS = Math.max(50, gain - PI);
+    const br = PT + PV - eta * (PS + PI), dt = mo[1] * 86400, QH = br * dt / 1e6, kwh = QH / 3.6;
+    return { prompt: "Raum mit A_E = " + AE + " m². Φ_T = " + PT + " W, Φ_V = " + PV + " W, Φ_S = " + PS + " W, Φ_I = " + PI + " W, Ausnutzungsgrad η_h = " + f(eta, 2) + ". Berechnen Sie den Heizwärmebedarf für den Monat " + mo[0] + " (" + mo[1] + " Tage) in MJ sowie die Energiekennzahl in kWh/m².",
+      fields: [F("br", "Klammer [Φ_T+Φ_V−η(Φ_S+Φ_I)]", "W", br, 0.015, 0.5), F("qh", "Q_H", "MJ", QH, 0.02, 0.1), F("ekz", "Q_H / A_E", "kWh/m²", kwh / AE, 0.02, 0.01)],
+      steps: "$$Q_H=\\left[\\Phi_T+\\Phi_V-\\eta_h(\\Phi_S+\\Phi_I)\\right]\\Delta t=\\left[" + (PT + PV) + "-" + n(eta, 2) + "\\cdot" + (PS + PI) + "\\right]\\cdot(" + mo[1] + "\\cdot24\\cdot3600)$$\n$$=" + n(br, 1) + "\\ \\mathrm{W}\\cdot" + n(dt, 0) + "\\ \\mathrm{s}=" + n(QH, 1) + "\\ \\mathrm{MJ}=" + n(kwh, 1) + "\\ \\mathrm{kWh},\\qquad \\frac{Q_H}{A_E}=" + n(kwh / AE, 2) + "\\ \\mathrm{kWh/m^2}$$\n1 kWh = 3,6 MJ. Only the **losses** count fully; gains are weighted with η_h. If the bracket were negative, Q_H = 0 (no heating needed)." };
+  });
+  add("solar-wien", 7, "Solare Gewinne: Fenster & Jahressumme", r => {
+    const o = pick([["Süd", 356], ["Ost", 210], ["West", 210], ["Nord", 150]], r), A = pick([3, 4, 6, 8, 10], r), fr = pick([0.1, 0.15, 0.2, 0.25, 0.3], r), g = pick([0.5, 0.55, 0.6, 0.65], r);
+    const Phi = A * (1 - fr) * g * o[1];
+    return { prompt: "Ein " + o[0] + "-orientiertes, " + A + " m² großes Fenster in einer vertikalen Wand am Standort Wien. Rahmenanteil " + Math.round(fr * 100) + " %, g = " + f(g, 2) + ". Strahlungssummen Wien (kWh/m²a): Süd 356, Ost/West 210, Nord 150, horizontal 368. Berechnen Sie den solaren Wärmegewinn Φ_S (Jahressumme).",
+      fields: [F("phi", "Φ_S", "kWh/a", Phi)], steps: "$$\\Phi_S=A\\,F_r\\,g\\,E_{" + o[0][0] + "}=" + A + "\\cdot(1-" + n(fr, 2) + ")\\cdot" + n(g, 2) + "\\cdot" + o[1] + "=" + n(Phi, 0) + "\\ \\mathrm{kWh/a}$$\nF_r = 1 − Rahmenanteil (the glazed share). Pick the radiation sum of the window's orientation." };
+  });
+
+  /* ---- M11 Sonne: Sonnenstand & Strahlungskomponenten (VO14) ---- */
+  add("sonnenhoehe", 11, "Sonnenhöhe zu Mittag & Schattenlänge", r => {
+    const L = pick([["Wien", 48.2], ["Innsbruck", 47.3], ["Graz", 47.1], ["Berlin", 52.5], ["Rom", 41.9]], r), D = pick([["Sommersonnenwende (21. Juni)", 23.45], ["Tag-und-Nacht-Gleiche (21. März / 23. Sept.)", 0], ["Wintersonnenwende (21. Dezember)", -23.45]], r), Hh = pick([6, 9, 12, 15], r);
+    const h = 90 - L[1] + D[1], s = Hh / Math.tan(h * Math.PI / 180);
+    return { prompt: "Standort " + L[0] + " (φ = " + f(L[1], 1) + "° N). Wie hoch steht die Sonne zu Mittag (12 h Sonnenzeit) am Tag der " + D[0] + " (Deklination δ = " + f(D[1], 2) + "°)? Wie lang ist dann der Schatten eines " + Hh + " m hohen Gebäudes?",
+      fields: [F("h", "h_max", "°", h, 0, 0.35), F("s", "Schattenlänge", "m", s, 0.02, 0.1)],
+      steps: "$$h_{max}=90^\\circ-\\varphi+\\delta=90-" + n(L[1], 1) + (D[1] < 0 ? "-" : "+") + n(Math.abs(D[1]), 2) + "=" + n(h, 1) + "^\\circ$$\n$$s=\\frac{H}{\\tan h}=\\frac{" + Hh + "}{\\tan " + n(h, 1) + "^\\circ}=" + n(s, 1) + "\\ \\mathrm{m}$$\nThe lecture's Vienna values (≈63° summer, ≈40° equinox, ≈17° winter) are read off a sun-path chart and are rounded — the formula gives slightly different numbers, so a tolerance of 2–3° is normal when reading." };
+  });
+  add("globalstr", 11, "Direkt-, Diffus- & Globalstrahlung", r => {
+    const hh = pick([15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65], r), ctx = pick([["Sommer", "Stadt", 6], ["Sommer", "Land", 4], ["Winter", "Stadt", 4], ["Winter", "Land", 2]], r);
+    const E0 = 1390, top = E0 * Math.sin(hh * Math.PI / 180), ES = Math.round(top * (0.85 - 0.06 * ctx[2]) * (0.75 + 0.25 * Math.min(1, hh / 60)) / 10) * 10;
+    const EH = (top - ES) / 3, Eg = ES + EH;
+    return { prompt: "Sonnenhöhe h = " + hh + "°, E₀ = 1390 W/m². Standort: " + ctx[1] + ", " + ctx[0] + ", Meereshöhe. Aus dem Diagramm für die Direktstrahlung wird E_S,H = " + ES + " W/m² abgelesen. Bestimmen Sie den Trübungsfaktor T, die Diffusstrahlung E_H und die Globalstrahlung E_Glob (jeweils auf die Horizontale).",
+      fields: [F("t", "T", "–", ctx[2], 0, 0.01), F("eh", "E_H", "W/m²", EH, 0.02, 2), F("eg", "E_Glob", "W/m²", Eg, 0.015, 2)],
+      steps: "Trübungsfaktor (Stadt/Land × Sommer/Winter): Sommer 6 / 4, Winter 4 / 2 → **T = " + ctx[2] + "** (p/p₀ = 1 at sea level).\n$$E_H=\\tfrac13\\left[E_0\\sin h-E_{S,H}\\right]=\\tfrac13\\left[1390\\cdot\\sin" + hh + "^\\circ-" + ES + "\\right]=\\tfrac13\\left[" + n(top, 0) + "-" + ES + "\\right]=" + n(EH, 0) + "\\ \\mathrm{W/m^2}$$\n$$E_{Glob}=E_{S,H}+E_H=" + ES + "+" + n(EH, 0) + "=" + n(Eg, 0) + "\\ \\mathrm{W/m^2}$$\nThe lecturer does this by head: sin 60° ≈ 0,87 → 1390·0,87 ≈ 1200 → minus 600 → ÷ 3 ≈ 200 → global ≈ 800." };
+  });
+
   /* ---- M09 ---- */
   add("operativ", 9, "Operative Temperatur", r => {
     const S = [["Fenster", pick([2, 4, 6], r), rstep(8, 14, 1, r)], ["Außenwand", pick([14, 20, 24], r), rstep(14, 17, 1, r)], ["Innenwände", pick([40, 56], r), rstep(20, 22, 1, r)], ["Decke", pick([20, 24], r), rstep(18, 20, 1, r)], ["Fußboden", pick([20, 24], r), rstep(20, 24, 1, r)]];

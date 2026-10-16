@@ -2,10 +2,11 @@
 (function (TP) {
   const { h } = TP;
   const U = TP.ui;
-  const ORDER = ["uwert", "glaser", "feuchte", "kontakt", "komfort"];
+  const ORDER = ["uwert", "glaser", "feuchte", "kontakt", "komfort", "energie", "sonne"];
   const PRACTICE = {
     uwert: ["rechnen", "U-Wert-Aufgaben rechnen"], glaser: ["glaser", "Glaser-Training starten (7 Punkte)"], feuchte: ["rechnen", "Oberflächenkondensat & f_Rsi rechnen"],
     kontakt: ["rechnen", "Kontakttemperatur & Diffusivität rechnen"], komfort: ["rechnen", "Operative Temperatur rechnen"],
+    energie: ["rechnen", "Heizwärmebedarf-Aufgaben rechnen"], sonne: ["rechnen", "Sonnenhöhe & Strahlung rechnen"],
   };
   TP.tabs.labor = {
     render(main, args) {

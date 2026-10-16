@@ -18,6 +18,8 @@
     uwert: '<rect x="4" y="5" width="16" height="14" rx="1"/><path d="M9 5v14M13 5v14M17 5v14"/>',
     feuchte: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
     kontakt: '<path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z"/>',
+    energie: '<path d="M3 20h18"/><path d="M6 20V9M12 20V4M18 20v-8"/><path d="M4 8l4-3 4 2 6-4" opacity=".6"/>',
+    sonne: '<circle cx="12" cy="13" r="3.5"/><path d="M3 20h18M12 4v2M5.6 7.6l1.4 1.4M18.4 7.6L17 9M3 13h2M19 13h2"/>',
     komfort: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     formeln: '<path d="M18 5H7l6 7-6 7h11"/>', symbole: '<path d="M5 20l7-16 7 16M8 14h8"/>', tabellen: '<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M9 4v16"/>',
     suche: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',

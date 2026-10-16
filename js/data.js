@@ -17,11 +17,11 @@
     { n: 4, short: "Instationär", sub: "Diffusivität", lane: "thermal", deps: [3], w: 3, vo: [10], labs: ["kontakt"] },
     { n: 5, short: "Feuchte", sub: "Mollier, µ-Wert", lane: "moisture", deps: [], w: 4, vo: [8], labs: ["feuchte"] },
     { n: 6, short: "Glaser", sub: "Tauwasserschutz", lane: "moisture", deps: [2, 5], w: 5, vo: [11], labs: ["glaser"] },
-    { n: 7, short: "Energiebilanz", sub: "Heizwärmebedarf", lane: "energy", deps: [2, 3, 8], w: 4, vo: [7, 9], labs: [] },
+    { n: 7, short: "Energiebilanz", sub: "Heizwärmebedarf", lane: "energy", deps: [2, 3, 8], w: 4, vo: [7, 9], labs: ["energie"] },
     { n: 8, short: "Klima", sub: "Heizgradtage", lane: "energy", deps: [1], w: 2, vo: [5], labs: [] },
     { n: 9, short: "Komfort", sub: "PMV, operative T", lane: "comfort", deps: [8], w: 3, vo: [6, 12], labs: ["komfort"] },
     { n: 10, short: "Sensorik & IAQ", sub: "Indizes, CO₂", lane: "comfort", deps: [9], w: 3, vo: [12], labs: [] },
-    { n: 11, short: "Sommer", sub: "Überwärmung", lane: "eco", deps: [3, 4], w: 3, vo: [14], labs: [] },
+    { n: 11, short: "Sommer", sub: "Überwärmung", lane: "eco", deps: [3, 4], w: 3, vo: [14], labs: ["sonne"] },
     { n: 12, short: "Ökologie", sub: "OI3-Index", lane: "eco", deps: [], w: 3, vo: [13], labs: [] },
     { n: 13, short: "Prüfung", sub: "Format & Wiederholung", lane: "exam", deps: [6, 7, 10, 11, 12], w: 2, vo: [15], labs: [] },
   ];
@@ -32,6 +32,8 @@
     feuchte: { name: "Taupunkt & Schimmel", sub: "Oberflächenkondensat, f_Rsi" },
     kontakt: { name: "Wärmeeindringung", sub: "Kontakttemperatur, Diffusivität" },
     komfort: { name: "Operative Temperatur", sub: "Strahlung, adaptiver Komfort" },
+    energie: { name: "Energiebilanz", sub: "Verluste, Gewinne, η_h, Q_H" },
+    sonne: { name: "Sonnenstand", sub: "Sonnenbahndiagramm, Ablesen" },
   };
 
   /* ---------- content (generated from the vault by tools/build_content.py) ---------- */

@@ -1,7 +1,7 @@
-const CACHE = "taupunkt-v2";
+const CACHE = "taupunkt-v3";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./css/style.css",
   "./vendor/katex/katex.min.css", "./vendor/katex/katex.min.js",
-  "./js/util.js", "./js/store.js", "./js/physics.js", "./js/data.js", "./js/ui.js", "./js/mcq.js", "./js/gens.js", "./js/charts.js", "./js/lab-wall.js", "./js/lab-glaser.js", "./js/lab-extra.js", "./js/tab-labor.js", "./js/tab-formeln.js", "./js/tab-ueben.js", "./js/glaser-drill.js", "./js/tab-pruefung.js", "./js/tab-lernen.js", "./js/tab-uebersicht.js", "./js/app.js",
+  "./js/util.js", "./js/store.js", "./js/physics.js", "./js/data.js", "./js/ui.js", "./js/mcq.js", "./js/gens.js", "./js/charts.js", "./js/lab-wall.js", "./js/lab-glaser.js", "./js/lab-extra.js", "./js/lab-energie.js", "./js/tab-labor.js", "./js/tab-formeln.js", "./js/tab-ueben.js", "./js/glaser-drill.js", "./js/tab-pruefung.js", "./js/tab-lernen.js", "./js/tab-uebersicht.js", "./js/app.js",
   "./data/cards.json", "./data/formulas.json", "./data/symbols.json", "./data/modules.json",
   "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png"];
 
